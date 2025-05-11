@@ -13,14 +13,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
         
-        // Create Sudoku game
         let sudokuVC = SudokuViewController()
         let sudokuPresenter = SudokuPresenter(viewController: sudokuVC)
         let sudokuInteractor = SudokuInteractor(presenter: sudokuPresenter)
@@ -29,27 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         sudokuRouter.dataStore = sudokuInteractor
         sudokuVC.interactor = sudokuInteractor
         sudokuVC.router = sudokuRouter
-        sudokuVC.tabBarItem = UITabBarItem(title: "Sudoku", image: UIImage(systemName: "number"), tag: 0)
         
-        // Create Queens game
-        let queensVC = QueensViewController()
-        let queensPresenter = QueensPresenter(viewController: queensVC)
-        let queensInteractor = QueensInteractor(presenter: queensPresenter)
-        let queensRouter = QueensRouter()
-        queensRouter.viewController = queensVC
-        queensRouter.dataStore = queensInteractor
-        queensVC.interactor = queensInteractor
-        queensVC.router = queensRouter
-        queensVC.tabBarItem = UITabBarItem(title: "Queens", image: UIImage(systemName: "crown"), tag: 1)
-        
-        // Create tab bar controller
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [
-            UINavigationController(rootViewController: sudokuVC),
-            UINavigationController(rootViewController: queensVC)
-        ]
-        
-        window.rootViewController = tabBarController
+        window.rootViewController = sudokuVC
         window.makeKeyAndVisible()
         self.window = window
     }

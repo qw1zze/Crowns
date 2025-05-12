@@ -61,6 +61,7 @@ final class SudokuBoardView: UIView {
     }
     
     func updateBoard(with cells: [[SudokuCell]]) {
+        print("aaaaa")
         for row in 0..<9 {
             for col in 0..<9 {
                 let cell = cells[row][col]

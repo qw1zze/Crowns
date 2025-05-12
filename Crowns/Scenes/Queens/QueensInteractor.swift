@@ -20,6 +20,10 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
     var board: Queens.Board?
     var history: [Queens.Board] = []
     var size: Int = 8
+    
+    init(presenter: QueensPresentationLogic?) {
+        self.presenter = presenter
+    }
 
     func startGame(request: Queens.StartGame.Request) {
         size = request.size

@@ -11,23 +11,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let mainVC = MainViewController()
-        let presenter = MainPresenter()
-        let interactor = MainInteractor()
-        let router = MainRouter()
-        presenter.viewController = mainVC
-        interactor.presenter = presenter
-        router.viewController = mainVC
-        router.dataStore = interactor
-        mainVC.interactor = interactor
-        mainVC.router = router
-        let nav = UINavigationController(rootViewController: mainVC)
-        window.rootViewController = nav
+        let mainViewController = MainAssembly.assembly()
+        window.rootViewController = UINavigationController(rootViewController: mainViewController)
         window.makeKeyAndVisible()
         self.window = window
     }
@@ -59,7 +48,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-

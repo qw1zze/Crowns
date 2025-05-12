@@ -10,6 +10,10 @@ protocol QueensPresentationLogic {
 
 final class QueensPresenter: QueensPresentationLogic {
     weak var viewController: QueensDisplayLogic?
+    
+    init(viewController: QueensDisplayLogic?) {
+        self.viewController = viewController
+    }
 
     func presentStartGame(response: Queens.StartGame.Response) {
         viewController?.displayStartGame(viewModel: Queens.StartGame.ViewModel(board: response.board))

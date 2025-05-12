@@ -2,7 +2,7 @@ import Foundation
 
 protocol MainPresentationLogic {
     func presentStartGame(response: Main.StartGame.Response)
-    func presentShowStats(response: Main.ShowStats.Response)
+    func presentShowStats()
 }
 
 final class MainPresenter: MainPresentationLogic {
@@ -13,7 +13,7 @@ final class MainPresenter: MainPresentationLogic {
         viewController?.displayStartGame(viewModel: viewModel)
     }
     
-    func presentShowStats(response: Main.ShowStats.Response) {
-        viewController?.displayShowStats(viewModel: Main.ShowStats.ViewModel())
+    func presentShowStats() {
+        viewController?.displayShowStats()
     }
 } 

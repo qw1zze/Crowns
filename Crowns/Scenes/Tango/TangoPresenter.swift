@@ -10,6 +10,10 @@ protocol TangoPresentationLogic {
 
 final class TangoPresenter: TangoPresentationLogic {
     weak var viewController: TangoDisplayLogic?
+    
+    init(viewController: TangoDisplayLogic?) {
+        self.viewController = viewController
+    }
 
     func presentStartGame(response: Tango.StartGame.Response) {
         viewController?.displayStartGame(viewModel: Tango.StartGame.ViewModel(board: response.board))

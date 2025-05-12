@@ -36,21 +36,17 @@ final class TangoActionBarView: UIView {
 final class TangoBarButton: UIButton {
     init(title: String, imageName: String) {
         super.init(frame: .zero)
-        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
-        let image = UIImage(systemName: imageName, withConfiguration: config)
-        setImage(image, for: .normal)
-        setTitle(title, for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 12)
-        tintColor = .label
-        setTitleColor(.label, for: .normal)
-        contentVerticalAlignment = .center
-        contentHorizontalAlignment = .center
-        imageView?.contentMode = .scaleAspectFit
-        let spacing: CGFloat = 2
-        let insetAmount: CGFloat = 8
-        self.contentEdgeInsets = UIEdgeInsets(top: insetAmount, left: 0, bottom: insetAmount, right: 0)
-        self.titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image!.size.width, bottom: -image!.size.height, right: 0)
-        self.imageEdgeInsets = UIEdgeInsets(top: -titleLabel!.intrinsicContentSize.height, left: 0, bottom: 0, right: -titleLabel!.intrinsicContentSize.width)
+        var config = UIButton.Configuration.filled()
+        config.title = title
+        config.image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular))
+        config.imagePlacement = .top
+        config.imagePadding = 2
+        config.baseForegroundColor = .label
+        config.baseBackgroundColor = .clear
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
+        self.configuration = config
+        self.titleLabel?.font = .systemFont(ofSize: 12)
+        self.tintColor = .label
     }
     required init?(coder: NSCoder) { fatalError() }
 } 

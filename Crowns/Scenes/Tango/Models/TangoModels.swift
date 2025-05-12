@@ -10,11 +10,13 @@ public enum Tango {
         public let col: Int
         public var figure: Figure
         public var isError: Bool
-        public init(row: Int, col: Int, figure: Figure, isError: Bool) {
+        public var isInitial: Bool
+        public init(row: Int, col: Int, figure: Figure, isError: Bool, isInitial: Bool = false) {
             self.row = row
             self.col = col
             self.figure = figure
             self.isError = isError
+            self.isInitial = isInitial
         }
     }
 
@@ -51,6 +53,20 @@ public enum Tango {
         public struct Request {}
         public struct Response { public let board: Board }
         public struct ViewModel { public let board: Board }
+    }
+
+    public enum Hint {
+        public struct Request {}
+        public struct Response { 
+            public let row: Int
+            public let col: Int
+            public let figure: Figure
+        }
+        public struct ViewModel { 
+            public let row: Int
+            public let col: Int
+            public let figure: Figure
+        }
     }
 
     public enum Validate {

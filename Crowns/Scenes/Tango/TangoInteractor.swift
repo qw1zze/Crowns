@@ -4,6 +4,7 @@ protocol TangoBusinessLogic {
     func startGame(request: Tango.StartGame.Request)
     func placeFigure(request: Tango.PlaceFigure.Request)
     func undo(request: Tango.Undo.Request)
+    func hint(request: Tango.Hint.Request)
     func validate(request: Tango.Validate.Request)
 }
 
@@ -27,10 +28,12 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
 
     func placeFigure(request: Tango.PlaceFigure.Request) {
         guard var board = board else { return }
+        let cell = board.cells[request.row][request.col]
+        if cell.isInitial { return }
         history.append(board)
-        var cell = board.cells[request.row][request.col]
-        cell.figure = request.figure
-        board.cells[request.row][request.col] = cell
+        var newCell = cell
+        newCell.figure = request.figure
+        board.cells[request.row][request.col] = newCell
         self.board = board
         validateBoard()
         if let validatedBoard = self.board {
@@ -42,6 +45,26 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
         guard let prev = history.popLast() else { return }
         board = prev
         presenter?.presentUndo(response: Tango.Undo.Response(board: prev))
+    }
+
+    func hint(request: Tango.Hint.Request) {
+        guard let board = board else { return }
+        for row in 0..<size {
+            for col in 0..<size {
+                if board.cells[row][col].figure == .empty {
+                    for figure in [Tango.Figure.cross, Tango.Figure.nought] {
+                        var testBoard = board
+                        testBoard.cells[row][col].figure = figure
+                        if isValidMove(row: row, col: col, figure: figure, board: testBoard) {
+                            if solve(board: testBoard) {
+                                presenter?.presentHint(response: Tango.Hint.Response(row: row, col: col, figure: figure))
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     func validate(request: Tango.Validate.Request) {
@@ -141,6 +164,117 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
 
     private func isWinState() -> Bool {
         guard let board = board else { return false }
+        for row in 0..<size {
+            for col in 0..<size {
+                if board.cells[row][col].figure == .empty || board.cells[row][col].isError {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private func isValidMove(row: Int, col: Int, figure: Tango.Figure, board: Tango.Board) -> Bool {
+        var testBoard = board
+        testBoard.cells[row][col].figure = figure
+        
+        // Проверка на 3 подряд
+        for i in 0..<size {
+            // Проверка строк
+            for j in 0..<(size-2) {
+                let f1 = testBoard.cells[i][j].figure
+                let f2 = testBoard.cells[i][j+1].figure
+                let f3 = testBoard.cells[i][j+2].figure
+                if f1 != .empty && f1 == f2 && f2 == f3 {
+                    return false
+                }
+            }
+            // Проверка столбцов
+            for j in 0..<(size-2) {
+                let f1 = testBoard.cells[j][i].figure
+                let f2 = testBoard.cells[j+1][i].figure
+                let f3 = testBoard.cells[j+2][i].figure
+                if f1 != .empty && f1 == f2 && f2 == f3 {
+                    return false
+                }
+            }
+        }
+
+        // Проверка количества в строках и столбцах
+        for i in 0..<size {
+            let rowCounts = testBoard.cells[i].reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, cell in
+                if cell.figure == .nought { dict[.nought]! += 1 }
+                if cell.figure == .cross { dict[.cross]! += 1 }
+            }
+            if rowCounts[.nought]! > 3 || rowCounts[.cross]! > 3 {
+                return false
+            }
+            let colCounts = (0..<size).reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, row in
+                let f = testBoard.cells[row][i].figure
+                if f == .nought { dict[.nought]! += 1 }
+                if f == .cross { dict[.cross]! += 1 }
+            }
+            if colCounts[.nought]! > 3 || colCounts[.cross]! > 3 {
+                return false
+            }
+        }
+
+        // Проверка связей
+        for row in 0..<size {
+            for col in 0..<(size-1) {
+                let rel = testBoard.horizontalRelations[row][col]
+                let f1 = testBoard.cells[row][col].figure
+                let f2 = testBoard.cells[row][col+1].figure
+                if rel == .equal {
+                    if f1 != .empty && f2 != .empty && f1 != f2 {
+                        return false
+                    }
+                } else if rel == .notEqual {
+                    if f1 != .empty && f2 != .empty && f1 == f2 {
+                        return false
+                    }
+                }
+            }
+        }
+        for row in 0..<(size-1) {
+            for col in 0..<size {
+                let rel = testBoard.verticalRelations[row][col]
+                let f1 = testBoard.cells[row][col].figure
+                let f2 = testBoard.cells[row+1][col].figure
+                if rel == .equal {
+                    if f1 != .empty && f2 != .empty && f1 != f2 {
+                        return false
+                    }
+                } else if rel == .notEqual {
+                    if f1 != .empty && f2 != .empty && f1 == f2 {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    // Solver: возвращает true, если доску можно решить до конца
+    private func solve(board: Tango.Board) -> Bool {
+        for row in 0..<size {
+            for col in 0..<size {
+                if board.cells[row][col].figure == .empty {
+                    for figure in [Tango.Figure.cross, Tango.Figure.nought] {
+                        var testBoard = board
+                        testBoard.cells[row][col].figure = figure
+                        if isValidMove(row: row, col: col, figure: figure, board: testBoard) {
+                            if solve(board: testBoard) {
+                                return true
+                            }
+                        }
+                    }
+                    return false // если ни одна фигура не подходит
+                }
+            }
+        }
+        // Если нет пустых клеток, проверяем финальную валидность
+        // (нет ошибок и все клетки заполнены)
         for row in 0..<size {
             for col in 0..<size {
                 if board.cells[row][col].figure == .empty || board.cells[row][col].isError {

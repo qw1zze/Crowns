@@ -25,6 +25,7 @@ final class TangoBoardView: UIView {
                 let cell = board.cells[row][col]
                 let cellView = TangoCellView()
                 cellView.configure(cell: cell)
+                cellView.isInitial = cell.isInitial
                 cellView.onTap = { [weak self] figure in self?.onCellTap?(row, col, figure) }
                 addSubview(cellView)
                 rowViews.append(cellView)
@@ -101,6 +102,10 @@ final class TangoBoardView: UIView {
         super.draw(rect)
         // draw больше не нужен для связей
     }
+
+    func showHint(row: Int, col: Int) {
+        cellViews[row][col].showHint()
+    }
 }
 
 private extension Array {
@@ -114,6 +119,7 @@ final class TangoCellView: UIView {
     var onTap: ((Tango.Figure) -> Void)?
     private let label = UILabel()
     private var currentFigure: Tango.Figure = .empty
+    var isInitial: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -133,7 +139,8 @@ final class TangoCellView: UIView {
         currentFigure = cell.figure
         label.text = cell.figure.rawValue
         label.textColor = cell.figure == .cross ? .systemBlue : .systemRed
-        backgroundColor = cell.isError ? UIColor.systemRed.withAlphaComponent(0.2) : .white
+        backgroundColor = cell.isInitial ? UIColor.systemGray5 : (cell.isError ? UIColor.systemRed.withAlphaComponent(0.2) : .white)
+        isInitial = cell.isInitial
     }
 
     override func layoutSubviews() {
@@ -142,6 +149,7 @@ final class TangoCellView: UIView {
     }
 
     @objc private func tap() {
+        guard !isInitial else { return }
         // Перебор: empty -> cross -> nought -> empty
         let next: Tango.Figure
         switch currentFigure {
@@ -150,5 +158,14 @@ final class TangoCellView: UIView {
         case .nought: next = .empty
         }
         onTap?(next)
+    }
+
+    func showHint() {
+        layer.borderColor = UIColor.systemYellow.cgColor
+        layer.borderWidth = 3
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.layer.borderColor = UIColor.systemGray4.cgColor
+            self?.layer.borderWidth = 1
+        }
     }
 } 

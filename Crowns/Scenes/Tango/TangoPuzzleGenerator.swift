@@ -24,12 +24,13 @@ final class TangoBoardGenerator {
             for col in 0..<size {
                 let symbol = puzzle[row][col]
                 let figure: Tango.Figure
+                let isInitial: Bool
                 switch symbol {
-                case "X": figure = .cross
-                case "O": figure = .nought
-                default: figure = .empty
+                case "X": figure = .cross; isInitial = true
+                case "O": figure = .nought; isInitial = true
+                default: figure = .empty; isInitial = false
                 }
-                rowCells.append(Tango.Cell(row: row, col: col, figure: figure, isError: false))
+                rowCells.append(Tango.Cell(row: row, col: col, figure: figure, isError: false, isInitial: isInitial))
             }
             cells.append(rowCells)
         }

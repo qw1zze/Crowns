@@ -2,17 +2,19 @@ import UIKit
 
 final class TangoActionBarView: UIView {
     var onUndo: (() -> Void)?
+    var onHint: (() -> Void)?
     var onNewGame: (() -> Void)?
 
     private let stack = UIStackView()
     private let undo = TangoBarButton(title: "Undo", imageName: "arrow.uturn.left")
+    private let hint = TangoBarButton(title: "Hint", imageName: "wand.and.stars")
     private let newGame = TangoBarButton(title: "New Game", imageName: "sparkles")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        [undo, newGame].forEach { stack.addArrangedSubview($0) }
+        [undo, hint, newGame].forEach { stack.addArrangedSubview($0) }
         addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -22,10 +24,12 @@ final class TangoActionBarView: UIView {
             stack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         undo.addTarget(self, action: #selector(undoTap), for: .touchUpInside)
+        hint.addTarget(self, action: #selector(hintTap), for: .touchUpInside)
         newGame.addTarget(self, action: #selector(newGameTap), for: .touchUpInside)
     }
     required init?(coder: NSCoder) { fatalError() }
     @objc private func undoTap() { onUndo?() }
+    @objc private func hintTap() { onHint?() }
     @objc private func newGameTap() { onNewGame?() }
 }
 

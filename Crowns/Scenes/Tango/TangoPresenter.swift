@@ -4,6 +4,7 @@ protocol TangoPresentationLogic {
     func presentStartGame(response: Tango.StartGame.Response)
     func presentPlaceFigure(response: Tango.PlaceFigure.Response)
     func presentUndo(response: Tango.Undo.Response)
+    func presentHint(response: Tango.Hint.Response)
     func presentValidate(response: Tango.Validate.Response)
 }
 
@@ -18,6 +19,9 @@ final class TangoPresenter: TangoPresentationLogic {
     }
     func presentUndo(response: Tango.Undo.Response) {
         viewController?.displayUndo(viewModel: Tango.Undo.ViewModel(board: response.board))
+    }
+    func presentHint(response: Tango.Hint.Response) {
+        viewController?.displayHint(viewModel: Tango.Hint.ViewModel(row: response.row, col: response.col, figure: response.figure))
     }
     func presentValidate(response: Tango.Validate.Response) {
         viewController?.displayValidate(viewModel: Tango.Validate.ViewModel(isWin: response.isWin))

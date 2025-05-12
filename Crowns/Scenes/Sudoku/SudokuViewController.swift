@@ -115,7 +115,7 @@ final class SudokuViewController: UIViewController {
     
     @objc private func showSudokuInstructions() {
         let message = "Заполните все клетки поля 9x9 \nцифрами от 1 до 9 так, \nчтобы в каждой строке, \nкаждом столбце и \nкаждом квадрате 3x3 каждая цифра встречалась только один раз.\n\n- Кликните по клетке, чтобы выбрать её.\n- Введите число с помощью панели внизу.\n- Используйте подсказки, если застряли.\n- У вас есть 3 попытки на ошибку."
-        let alert = UIAlertController(title: "Инструкция", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Как играть", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }

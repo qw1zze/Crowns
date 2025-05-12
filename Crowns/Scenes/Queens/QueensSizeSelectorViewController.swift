@@ -13,7 +13,7 @@ final class QueensSizeSelectorViewController: UIViewController {
     
     private func setupAlert() {
         let alertView = UIView()
-        alertView.backgroundColor = .systemBackground
+        alertView.backgroundColor = .background
         alertView.layer.cornerRadius = 18
         alertView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(alertView)
@@ -22,9 +22,9 @@ final class QueensSizeSelectorViewController: UIViewController {
             alertView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             alertView.widthAnchor.constraint(equalToConstant: 320)
         ])
-        
         titleLabel.text = "Выберите размер поля"
         titleLabel.font = .boldSystemFont(ofSize: 20)
+        titleLabel.textColor = .white
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         alertView.addSubview(titleLabel)
@@ -50,7 +50,8 @@ final class QueensSizeSelectorViewController: UIViewController {
             let button = UIButton(type: .system)
             button.setTitle(size.title, for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-            button.backgroundColor = .secondarySystemBackground
+            button.tintColor = .white
+            button.backgroundColor = .backgrundSecondary
             button.layer.cornerRadius = 10
             button.heightAnchor.constraint(equalToConstant: 44).isActive = true
             button.addTarget(self, action: #selector(sizeTapped(_:)), for: .touchUpInside)

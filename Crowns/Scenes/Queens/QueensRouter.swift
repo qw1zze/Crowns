@@ -19,9 +19,9 @@ final class QueensRouter: QueensRoutingLogic, QueensDataPassing {
 
     func showInstructions() {
         let message = """
-        Расставьте фигуры так, чтобы в каждой строке, столбце, цветовом сегменте и среди соседних ячеек была только одна фигура.\n- Крест ставится первым нажатием, фигура — вторым.\n- Фигуры не могут быть по соседству (включая диагонали).\n- Используйте Undo, Hint, New Game, таймер.
+        Ваша цель расставить фигуры так, чтобы в каждой строке, столбце, цветовом регионе была одна ♛\n\nНажмите один раз чтобы разместить x и дважды чтобы разместить ♛. \n\nИспользуйте x чтобы отметить где ♛ не может быть расположена\n\n 2 ♛ не могут располагаться в соседних ячейках, даже по диагонали
         """
-        let alert = UIAlertController(title: "Инструкция", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Как играть", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         viewController?.present(alert, animated: true)
     }

@@ -6,9 +6,9 @@ final class QueensActionBarView: UIView {
     var onNewGame: (() -> Void)?
 
     private let stack = UIStackView()
-    private let undo = ActionQueensBarButton(title: "Undo", imageName: "arrow.uturn.left")
-    private let hint = ActionQueensBarButton(title: "Hint", imageName: "wand.and.stars")
-    private let newGame = ActionQueensBarButton(title: "New Game", imageName: "sparkles")
+    private let undo = ActionQueensBarButton(title: "Назад", imageName: "arrow.uturn.left")
+    private let hint = ActionQueensBarButton(title: "Подсказка", imageName: "wand.and.stars")
+    private let newGame = ActionQueensBarButton(title: "Новая игра", imageName: "sparkles")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +41,7 @@ final class ActionQueensBarButton: UIButton {
         config.image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular))
         config.imagePlacement = .top
         config.imagePadding = 2
-        config.baseForegroundColor = .label
+        config.baseForegroundColor = .primary
         config.baseBackgroundColor = .clear
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
         self.configuration = config

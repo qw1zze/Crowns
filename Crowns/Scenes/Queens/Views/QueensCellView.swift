@@ -12,9 +12,12 @@ final class QueensCellView: UIView {
         addSubview(queenImage)
         addSubview(crossView)
         queenImage.contentMode = .scaleAspectFit
-        queenImage.tintColor = .black
+        queenImage.tintColor = .white.withAlphaComponent(0.9)
         crossView.contentMode = .scaleAspectFit
         crossView.tintColor = .black
+        layer.borderWidth = 0
+        layer.cornerRadius = 8
+        clipsToBounds = true
     }
     required init?(coder: NSCoder) { fatalError() }
 
@@ -22,7 +25,8 @@ final class QueensCellView: UIView {
         backgroundColor = cell.color
         queenImage.isHidden = !cell.hasQueen
         crossView.isHidden = !cell.hasCross
-        queenImage.tintColor = cell.isError ? .red : .black
+        crossView.tintColor = .white.withAlphaComponent(0.9)
+        queenImage.tintColor = cell.isError ? .red : .white.withAlphaComponent(0.9)
         layer.borderWidth = 1
     }
 
@@ -35,7 +39,7 @@ final class QueensCellView: UIView {
 
     @objc private func tap() { onTap?() }
     func showHint() {
-        layer.borderColor = UIColor.systemYellow.cgColor
+        layer.borderColor = UIColor.white.withAlphaComponent(0.9).cgColor
         layer.borderWidth = 3
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.layer.borderColor = UIColor.black.cgColor

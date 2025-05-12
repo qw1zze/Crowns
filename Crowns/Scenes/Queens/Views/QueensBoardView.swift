@@ -8,6 +8,9 @@ final class QueensBoardView: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = .background
+        layer.cornerRadius = 16
+        layer.borderWidth = 0
+        clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {

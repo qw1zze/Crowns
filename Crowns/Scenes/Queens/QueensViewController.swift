@@ -31,24 +31,27 @@ final class QueensViewController: UIViewController, QueensDisplayLogic {
     }
 
     private func setupUI() {
-        view.backgroundColor = .secondarySystemBackground
-        title = "Queens"
+        view.backgroundColor = .background
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backTapped))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(instructionTapped))
 
         timerLabel.font = .monospacedDigitSystemFont(ofSize: 16, weight: .medium)
-        timerLabel.textColor = .gray
+        timerLabel.textColor = .primary
         timerLabel.textAlignment = .center
         timerLabel.text = "00:00"
     }
 
     private func setupConstraints() {
-        [timerLabel, boardView, actionBar].forEach { v in
-            v.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(v)
-        }
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        boardView.translatesAutoresizingMaskIntoConstraints = false
+        actionBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(timerLabel)
+        view.addSubview(boardView)
+        view.addSubview(actionBar)
+        
         NSLayoutConstraint.activate([
-            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             boardView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 10),
@@ -56,7 +59,7 @@ final class QueensViewController: UIViewController, QueensDisplayLogic {
             boardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             boardView.heightAnchor.constraint(equalTo: boardView.widthAnchor),
 
-            actionBar.topAnchor.constraint(equalTo: boardView.bottomAnchor, constant: 10),
+            actionBar.topAnchor.constraint(equalTo: boardView.bottomAnchor, constant: 20),
             actionBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             actionBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             actionBar.heightAnchor.constraint(equalToConstant: 70)
@@ -114,8 +117,8 @@ final class QueensViewController: UIViewController, QueensDisplayLogic {
             stopTimer()
             let m = secondsElapsed / 60, s = secondsElapsed % 60
             StatsService.shared.updateStats(for: .queens, time: TimeInterval(secondsElapsed))
-            let alert = UIAlertController(title: "Победа!", message: "Вы решили задачу за \(String(format: "%02d:%02d", m, s))", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            let alert = UIAlertController(title: "Вы выиграли!", message: "Вы решили Queens за \(String(format: "%02d:%02d", m, s))", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
                 if let size = self?.initialSize {
                     self?.interactor?.startGame(request: .init(size: size))
                     self?.startTimer()

@@ -7,9 +7,9 @@ final class ActionBarView: UIView {
     
     private let stackView = UIStackView()
     
-    private let undoButton = SudokuBarButton(title: "Undo", imageName: "arrow.uturn.left")
-    private let hintButton = SudokuBarButton(title: "Smart Hint", imageName: "wand.and.stars")
-    private let newGameButton = SudokuBarButton(title: "New Game", imageName: "sparkles")
+    private let undoButton = SudokuBarButton(title: "Назад", imageName: "arrow.uturn.left")
+    private let hintButton = SudokuBarButton(title: "Подсказка", imageName: "wand.and.stars")
+    private let newGameButton = SudokuBarButton(title: "Новая игра", imageName: "sparkles")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,7 +24,7 @@ final class ActionBarView: UIView {
     }
     
     private func setupUI() {
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = .background
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.alignment = .center
@@ -60,7 +60,7 @@ final class SudokuBarButton: UIButton {
         config.image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular))
         config.imagePlacement = .top
         config.imagePadding = 2
-        config.baseForegroundColor = .label
+        config.baseForegroundColor = .primary
         config.baseBackgroundColor = .clear
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
         self.configuration = config
@@ -71,3 +71,4 @@ final class SudokuBarButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 } 
+ 

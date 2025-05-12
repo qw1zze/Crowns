@@ -15,14 +15,15 @@ final class NumberPadView: UIView {
     }
     
     private func setupUI() {
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = .background
         
         // Create number buttons
         for number in 1...9 {
             let button = UIButton(type: .system)
             button.setTitle("\(number)", for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 24, weight: .medium)
-            button.backgroundColor = .systemBackground
+            button.tintColor = .primary
+            button.backgroundColor = .backgrundSecondary
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOpacity = 0.3
             button.layer.shadowOffset = .zero

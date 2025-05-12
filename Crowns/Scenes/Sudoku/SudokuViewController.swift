@@ -35,17 +35,16 @@ final class SudokuViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .secondarySystemBackground
-        title = "Sudoku"
+        view.backgroundColor = .background
         
-        timerLabel.font = .monospacedDigitSystemFont(ofSize: 16, weight: .medium)
-        timerLabel.textColor = .gray
+        timerLabel.font = .monospacedDigitSystemFont(ofSize: 14, weight: .medium)
+        timerLabel.textColor = .white.withAlphaComponent(0.8)
         timerLabel.textAlignment = .center
         timerLabel.text = "00:00"
         
         mistakesLabel.text = "Ошибки: 0 / 3"
         mistakesLabel.font = .systemFont(ofSize: 14)
-        mistakesLabel.textColor = .gray
+        mistakesLabel.textColor = .white.withAlphaComponent(0.8)
         
         view.addSubview(timerLabel)
         view.addSubview(boardView)
@@ -62,10 +61,10 @@ final class SudokuViewController: UIViewController {
         actionBarView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             timerLabel.trailingAnchor.constraint(equalTo: boardView.trailingAnchor, constant: -10),
             
-            mistakesLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            mistakesLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             mistakesLabel.leadingAnchor.constraint(equalTo: boardView.leadingAnchor, constant: 10),
             
             boardView.topAnchor.constraint(equalTo: mistakesLabel.bottomAnchor),
@@ -115,7 +114,7 @@ final class SudokuViewController: UIViewController {
     }
     
     @objc private func showSudokuInstructions() {
-        let message = "Заполните все клетки поля 9x9 цифрами от 1 до 9 так, чтобы в каждой строке, каждом столбце и каждом квадрате 3x3 каждая цифра встречалась только один раз.\n\n- Кликните по клетке, чтобы выбрать её.\n- Введите число с помощью панели внизу.\n- Используйте подсказки, если застряли.\n- У вас есть 3 попытки на ошибку.\n- Время решения отображается сверху."
+        let message = "Заполните все клетки поля 9x9 \nцифрами от 1 до 9 так, \nчтобы в каждой строке, \nкаждом столбце и \nкаждом квадрате 3x3 каждая цифра встречалась только один раз.\n\n- Кликните по клетке, чтобы выбрать её.\n- Введите число с помощью панели внизу.\n- Используйте подсказки, если застряли.\n- У вас есть 3 попытки на ошибку."
         let alert = UIAlertController(title: "Инструкция", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
@@ -166,8 +165,8 @@ extension SudokuViewController: SudokuDisplayLogic {
         let seconds = secondsElapsed % 60
         let timeString = String(format: "%02d:%02d", minutes, seconds)
         StatsService.shared.updateStats(for: .sudoku, time: TimeInterval(secondsElapsed))
-        let alert = UIAlertController(title: "Congratulations!", message: "You've won the game!\nTime: \(timeString)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "New Game", style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: "Вы выиграли!", message: "Вы решили судоку за \(timeString)!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
             self?.interactor?.generateNewGame()
             self?.startTimer()
         })
@@ -176,11 +175,8 @@ extension SudokuViewController: SudokuDisplayLogic {
     
     func displayGameOver() {
         stopTimer()
-        let minutes = secondsElapsed / 60
-        let seconds = secondsElapsed % 60
-        let timeString = String(format: "%02d:%02d", minutes, seconds)
-        let alert = UIAlertController(title: "Game Over", message: "You've made too many mistakes!\nTime: \(timeString)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "New Game", style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: "Вы проиграли", message: "Вы сделали слишком много ошибок!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
             self?.interactor?.generateNewGame()
             self?.startTimer()
         })

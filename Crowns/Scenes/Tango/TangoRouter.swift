@@ -21,7 +21,7 @@ final class TangoRouter: TangoRoutingLogic, TangoDataPassing {
         let message = """
         В каждой строке и столбце по 3 крестика и 3 нолика.\nНе может быть больше двух одинаковых подряд.\n= — между ячейками должны быть одинаковые фигуры.\nx — между ячейками должны быть разные фигуры.
         """
-        let alert = UIAlertController(title: "Инструкция", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Как играть", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         viewController?.present(alert, animated: true)
     }

@@ -32,7 +32,7 @@ final class TangoBoardView: UIView {
             }
             cellViews.append(rowViews)
         }
-        // Горизонтальные связи
+
         for row in 0..<size {
             var rowViews: [TangoRelationView] = []
             for col in 0..<(size-1) {
@@ -45,7 +45,7 @@ final class TangoBoardView: UIView {
             }
             horizontalRelationViews.append(rowViews)
         }
-        // Вертикальные связи
+
         for row in 0..<(size-1) {
             var rowViews: [TangoRelationView] = []
             for col in 0..<size {
@@ -72,11 +72,10 @@ final class TangoBoardView: UIView {
                 cellView.frame = CGRect(x: CGFloat(col) * cellSize, y: CGFloat(row) * cellSize, width: cellSize, height: cellSize)
             }
         }
-        // Горизонтальные связи
+
         for row in 0..<size {
             for col in 0..<(size-1) {
                 guard let relView = horizontalRelationViews[safe: row]?[safe: col] else { continue }
-                // Центр между cell[col] и cell[col+1] в строке row
                 let x1 = CGFloat(col) * cellSize + cellSize/2
                 let x2 = CGFloat(col+1) * cellSize + cellSize/2
                 let y = CGFloat(row) * cellSize + cellSize/2
@@ -84,11 +83,11 @@ final class TangoBoardView: UIView {
                 relView.frame = CGRect(x: center.x - relationSize/2, y: center.y - relationSize/2, width: relationSize, height: relationSize)
             }
         }
-        // Вертикальные связи
+
         for row in 0..<(size-1) {
             for col in 0..<size {
                 guard let relView = verticalRelationViews[safe: row]?[safe: col] else { continue }
-                // Центр между cell[row][col] и cell[row+1][col]
+
                 let y1 = CGFloat(row) * cellSize + cellSize/2
                 let y2 = CGFloat(row+1) * cellSize + cellSize/2
                 let x = CGFloat(col) * cellSize + cellSize/2
@@ -96,11 +95,6 @@ final class TangoBoardView: UIView {
                 relView.frame = CGRect(x: center.x - relationSize/2, y: center.y - relationSize/2, width: relationSize, height: relationSize)
             }
         }
-    }
-
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        // draw больше не нужен для связей
     }
 
     func showHint(row: Int, col: Int) {
@@ -117,19 +111,24 @@ private extension Array {
 
 final class TangoCellView: UIView {
     var onTap: ((Tango.Figure) -> Void)?
-    private let label = UILabel()
+    private let imageView = UIImageView()
     private var currentFigure: Tango.Figure = .empty
     var isInitial: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .backgrundSecondary
         layer.cornerRadius = 8
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1
-        layer.borderColor = UIColor.systemGray4.cgColor
-        label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.textAlignment = .center
-        addSubview(label)
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowRadius = 1
+        layer.shadowOpacity = 0.2
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
+        addSubview(imageView)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(tap))
         addGestureRecognizer(tap)
     }
@@ -137,20 +136,28 @@ final class TangoCellView: UIView {
 
     func configure(cell: Tango.Cell) {
         currentFigure = cell.figure
-        label.text = cell.figure.rawValue
-        label.textColor = cell.figure == .cross ? .systemBlue : .systemRed
-        backgroundColor = cell.isInitial ? UIColor.systemGray5 : (cell.isError ? UIColor.systemRed.withAlphaComponent(0.2) : .white)
+        switch cell.figure {
+        case .cross:
+            imageView.image = UIImage(systemName: "sun.max.fill")
+            imageView.tintColor = .orange
+        case .nought:
+            imageView.image = UIImage(systemName: "moon.fill")
+            imageView.tintColor = .systemBlue
+        case .empty:
+            imageView.image = nil
+        }
+        backgroundColor = cell.isError ? UIColor.systemRed.withAlphaComponent(0.4) : (cell.isInitial ? UIColor.backgrundSecondary.withAlphaComponent(0.2) : .backgrundSecondary)
         isInitial = cell.isInitial
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        label.frame = bounds
+        let padding: CGFloat = bounds.width * 0.2
+        imageView.frame = bounds.insetBy(dx: padding, dy: padding)
     }
 
     @objc private func tap() {
         guard !isInitial else { return }
-        // Перебор: empty -> cross -> nought -> empty
         let next: Tango.Figure
         switch currentFigure {
         case .empty: next = .cross

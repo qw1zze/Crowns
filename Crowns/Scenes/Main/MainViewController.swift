@@ -28,7 +28,6 @@ final class MainViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupNavigation()
-        sudokuTapped() // refirect delete
     }
     
     private func setupNavigation() {

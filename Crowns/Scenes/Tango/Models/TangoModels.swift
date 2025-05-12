@@ -27,8 +27,8 @@ public enum Tango {
     public struct Board {
         public let size: Int
         public var cells: [[Cell]]
-        public var horizontalRelations: [[Relation]] // [row][col] — между col и col+1
-        public var verticalRelations: [[Relation]]   // [row][col] — между row и row+1
+        public var horizontalRelations: [[Relation]]
+        public var verticalRelations: [[Relation]] 
         public init(size: Int, cells: [[Cell]], horizontalRelations: [[Relation]], verticalRelations: [[Relation]]) {
             self.size = size
             self.cells = cells

@@ -17,7 +17,6 @@ final class NumberPadView: UIView {
     private func setupUI() {
         backgroundColor = .background
         
-        // Create number buttons
         for number in 1...9 {
             let button = UIButton(type: .system)
             button.setTitle("\(number)", for: .normal)

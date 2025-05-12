@@ -75,13 +75,10 @@ final class SudokuBoardView: UIView {
     }
     
     @objc private func cellTapped(_ sender: SudokuCellView) {
-        // Don't allow selection of non-editable cells or cells that are already filled
         guard sender.isEditable && sender.value == 0 else { return }
         
-        // Deselect previous cell
         selectedCellView?.isSelected = false
         
-        // Select new cell
         sender.isSelected = true
         selectedCellView = sender
         

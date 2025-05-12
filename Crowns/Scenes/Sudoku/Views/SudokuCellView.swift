@@ -60,7 +60,6 @@ final class SudokuCellView: UIButton {
         label.text = cell.value == 0 ? "" : "\(cell.value)"
         label.textColor = .white.withAlphaComponent(0.9)
         
-        // Reset selection state when cell is configured
         isSelected = false
     }
     

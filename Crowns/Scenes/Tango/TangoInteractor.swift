@@ -76,21 +76,19 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
         presenter?.presentValidate(response: Tango.Validate.Response(isWin: isWin))
     }
 
-    // MARK: - Валидация
-
     private func validateBoard() {
         guard var board = board else { return }
-        // Сброс ошибок
+
         for row in 0..<size {
             for col in 0..<size {
                 board.cells[row][col].isError = false
             }
         }
-        // Проверка по правилам
+
         for i in 0..<size {
-            // Проверка подряд 3 одинаковых в строках и столбцах
+
             for j in 0..<(size-2) {
-                // строки
+
                 let f1 = board.cells[i][j].figure
                 let f2 = board.cells[i][j+1].figure
                 let f3 = board.cells[i][j+2].figure
@@ -99,7 +97,7 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
                     board.cells[i][j+1].isError = true
                     board.cells[i][j+2].isError = true
                 }
-                // столбцы
+
                 let v1 = board.cells[j][i].figure
                 let v2 = board.cells[j+1][i].figure
                 let v3 = board.cells[j+2][i].figure
@@ -126,7 +124,6 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
                 for row in 0..<size { board.cells[row][i].isError = true }
             }
         }
-        // Проверка знаков = и x
         for row in 0..<size {
             for col in 0..<(size-1) {
                 let rel = board.horizontalRelations[row][col]
@@ -182,9 +179,7 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
         var testBoard = board
         testBoard.cells[row][col].figure = figure
         
-        // Проверка на 3 подряд
         for i in 0..<size {
-            // Проверка строк
             for j in 0..<(size-2) {
                 let f1 = testBoard.cells[i][j].figure
                 let f2 = testBoard.cells[i][j+1].figure
@@ -193,7 +188,6 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
                     return false
                 }
             }
-            // Проверка столбцов
             for j in 0..<(size-2) {
                 let f1 = testBoard.cells[j][i].figure
                 let f2 = testBoard.cells[j+1][i].figure
@@ -204,7 +198,6 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
             }
         }
 
-        // Проверка количества в строках и столбцах
         for i in 0..<size {
             let rowCounts = testBoard.cells[i].reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, cell in
                 if cell.figure == .nought, let value = dict[.nought] { dict[.nought] = value + 1 }
@@ -224,7 +217,6 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
             }
         }
 
-        // Проверка связей
         for row in 0..<size {
             for col in 0..<(size-1) {
                 let rel = testBoard.horizontalRelations[row][col]
@@ -260,7 +252,6 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
         return true
     }
 
-    // Solver: возвращает true, если доску можно решить до конца
     private func solve(board: Tango.Board) -> Bool {
         for row in 0..<size {
             for col in 0..<size {
@@ -274,12 +265,10 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
                             }
                         }
                     }
-                    return false // если ни одна фигура не подходит
+                    return false
                 }
             }
         }
-        // Если нет пустых клеток, проверяем финальную валидность
-        // (нет ошибок и все клетки заполнены)
         for row in 0..<size {
             for col in 0..<size {
                 if board.cells[row][col].figure == .empty || board.cells[row][col].isError {

@@ -10,6 +10,7 @@ final class TangoRelationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
+        tintColor = .white
         isUserInteractionEnabled = false
     }
     required init?(coder: NSCoder) { fatalError() }
@@ -18,7 +19,7 @@ final class TangoRelationView: UIView {
         let w = rect.width, h = rect.height
         ctx.setLineCap(.round)
         ctx.setLineWidth(min(w, h) * 0.18)
-        ctx.setStrokeColor(UIColor.label.cgColor)
+        ctx.setStrokeColor(UIColor.primary.cgColor)
         switch type {
         case .equal:
             let y1 = h * 0.35, y2 = h * 0.65

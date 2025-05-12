@@ -92,7 +92,7 @@ final class QueensFieldGenerator {
                 for i in 0..<size {
                     rowCells = []
                     for j in 0..<size {
-                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]], hasQueen: false, hasCross: false, isError: false))
+                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]].withAlphaComponent(0.8), hasQueen: false, hasCross: false, isError: false))
                     }
                     cells.append(rowCells)
                 }
@@ -105,7 +105,7 @@ final class QueensFieldGenerator {
                 var rowCells: [Queens.Cell] = []
                 for i in 0..<size {
                     for j in 0..<size {
-                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]], hasQueen: false, hasCross: false, isError: false))
+                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]].withAlphaComponent(0.8), hasQueen: false, hasCross: false, isError: false))
                     }
                     cells.append(rowCells)
                 }

@@ -28,10 +28,10 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
     }
 
     private func setupUI() {
-        view.backgroundColor = .secondarySystemBackground
-        title = "Tango"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backTapped))
+        view.backgroundColor = .background
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(instructionTapped))
+        navigationItem.rightBarButtonItem?.tintColor = .white
 
         timerLabel.font = .monospacedDigitSystemFont(ofSize: 16, weight: .medium)
         timerLabel.textColor = .gray
@@ -40,12 +40,16 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
     }
 
     private func setupConstraints() {
-        [timerLabel, boardView, actionBar].forEach { v in
-            v.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(v)
-        }
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        boardView.translatesAutoresizingMaskIntoConstraints = false
+        actionBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(timerLabel)
+        view.addSubview(boardView)
+        view.addSubview(actionBar)
+        
         NSLayoutConstraint.activate([
-            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             boardView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 10),
@@ -53,7 +57,7 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
             boardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             boardView.heightAnchor.constraint(equalTo: boardView.widthAnchor),
 
-            actionBar.topAnchor.constraint(equalTo: boardView.bottomAnchor, constant: 10),
+            actionBar.topAnchor.constraint(equalTo: boardView.bottomAnchor, constant: 20),
             actionBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             actionBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             actionBar.heightAnchor.constraint(equalToConstant: 70)
@@ -73,7 +77,20 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
     }
 
     @objc private func backTapped() { router?.routeToMain() }
-    @objc private func instructionTapped() { router?.showInstructions() }
+    @objc private func instructionTapped() {
+        let message = """
+        Заполните поле солнцами (☀️) и лунами (🌙) по следующим правилам:
+        
+        - В каждой строке и столбце должно быть по 3 солнца и 3 луны
+        - Нельзя ставить больше двух одинаковых символов подряд
+        - Знак = означает, что символы в соседних ячейках должны быть одинаковыми
+        - Знак × означает, что символы в соседних ячейках должны быть разными
+        """
+        
+        let alert = UIAlertController(title: "Правила игры", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 
     private func startTimer() {
         timer?.invalidate()
@@ -90,7 +107,6 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
         timerLabel.text = String(format: "%02d:%02d", m, s)
     }
 
-    // MARK: - DisplayLogic
     func displayStartGame(viewModel: Tango.StartGame.ViewModel) {
         boardView.updateBoard(board: viewModel.board)
     }
@@ -110,8 +126,8 @@ final class TangoViewController: UIViewController, TangoDisplayLogic {
             stopTimer()
             let m = secondsElapsed / 60, s = secondsElapsed % 60
             StatsService.shared.updateStats(for: .tango, time: TimeInterval(secondsElapsed))
-            let alert = UIAlertController(title: "Победа!", message: "Вы решили задачу за \(String(format: "%02d:%02d", m, s))", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            let alert = UIAlertController(title: "Вы выиграли!", message: "Вы решили Tango за \(String(format: "%02d:%02d", m, s))", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
                 self?.interactor?.startGame(request: .init())
                 self?.startTimer()
             })

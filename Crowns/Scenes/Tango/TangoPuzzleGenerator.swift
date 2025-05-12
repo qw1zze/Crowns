@@ -72,12 +72,10 @@ final class TangoBoardGenerator {
             let (r2, c2) = pair.second
             let rel: Tango.Relation = (sign == "=") ? .equal : .notEqual
             if r1 == r2 {
-                // горизонтальная связь
                 let row = r1
                 let col = min(c1, c2)
                 horizontal[row][col] = rel
             } else if c1 == c2 {
-                // вертикальная связь
                 let row = min(r1, r2)
                 let col = c1
                 vertical[row][col] = rel

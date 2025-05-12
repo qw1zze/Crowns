@@ -4,7 +4,6 @@ enum GameMode: String, CaseIterable, Codable {
     case tango = "Tango"
     case queens = "Queens"
     case sudoku = "Sudoku"
-    // Добавьте другие режимы при необходимости
 }
 
 struct GameStats: Codable {

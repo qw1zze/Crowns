@@ -27,6 +27,28 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        setupNavigation()
+    }
+    
+    private func setupNavigation() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .navigation
+        appearance.setBackIndicatorImage(
+            UIImage(systemName: "chevron.left")?
+                .withConfiguration(UIImage.SymbolConfiguration(pointSize: 12, weight: .medium)),
+            transitionMaskImage: UIImage(systemName: "chevron.left")?
+                .withConfiguration(UIImage.SymbolConfiguration(pointSize: 12, weight: .medium))
+        )
+        
+        let backButtonAppearance = UIBarButtonItemAppearance()
+        appearance.backButtonAppearance = backButtonAppearance
+        
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationItem.backButtonTitle = ""
     }
     
     private func setupUI() {

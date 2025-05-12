@@ -6,8 +6,7 @@ final class StatsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        title = "Статистика"
+        view.backgroundColor = .background
         setupStack()
         setupResetButton()
         layoutUI()
@@ -55,18 +54,22 @@ final class StatsViewController: UIViewController {
         let title = UILabel()
         title.text = mode.rawValue
         title.font = .boldSystemFont(ofSize: 18)
+        title.textColor = .white
         let games = UILabel()
+        games.textColor = .white
         games.text = "Завершено игр: \(stats.gamesCompleted)"
         let avg = UILabel()
         avg.text = "Среднее время: " + (stats.gamesCompleted == 0 ? "-" : formatTime(stats.averageTime))
+        avg.textColor = .white
         let best = UILabel()
         best.text = "Лучшее время: " + (stats.bestTime == .greatestFiniteMagnitude ? "-" : formatTime(stats.bestTime))
+        best.textColor = .white
         let vStack = UIStackView(arrangedSubviews: [title, games, avg, best])
         vStack.axis = .vertical
         vStack.spacing = 4
         vStack.alignment = .leading
         vStack.layer.cornerRadius = 10
-        vStack.backgroundColor = UIColor.secondarySystemBackground
+        vStack.backgroundColor = .backgrundSecondary
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.layoutMargins = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         return vStack

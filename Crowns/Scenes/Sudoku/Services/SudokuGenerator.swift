@@ -76,21 +76,18 @@ final class SudokuGenerator: SudokuGeneratorProtocol {
     }
     
     private func isSafe(_ board: [[Int]], row: Int, col: Int, num: Int) -> Bool {
-        // Check row
         for x in 0..<9 {
             if board[row][x] == num {
                 return false
             }
         }
         
-        // Check column
         for x in 0..<9 {
             if board[x][col] == num {
                 return false
             }
         }
         
-        // Check 3x3 box
         let startRow = row - row % 3
         let startCol = col - col % 3
         

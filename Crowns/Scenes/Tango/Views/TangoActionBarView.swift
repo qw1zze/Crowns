@@ -41,7 +41,7 @@ final class TangoBarButton: UIButton {
         config.image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular))
         config.imagePlacement = .top
         config.imagePadding = 2
-        config.baseForegroundColor = .label
+        config.baseForegroundColor = .primary
         config.baseBackgroundColor = .clear
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
         self.configuration = config

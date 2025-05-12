@@ -165,6 +165,7 @@ extension SudokuViewController: SudokuDisplayLogic {
         let minutes = secondsElapsed / 60
         let seconds = secondsElapsed % 60
         let timeString = String(format: "%02d:%02d", minutes, seconds)
+        StatsService.shared.updateStats(for: .sudoku, time: TimeInterval(secondsElapsed))
         let alert = UIAlertController(title: "Congratulations!", message: "You've won the game!\nTime: \(timeString)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "New Game", style: .default) { [weak self] _ in
             self?.interactor?.generateNewGame()

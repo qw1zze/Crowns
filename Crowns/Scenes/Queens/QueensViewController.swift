@@ -113,6 +113,7 @@ final class QueensViewController: UIViewController, QueensDisplayLogic {
         if viewModel.isWin {
             stopTimer()
             let m = secondsElapsed / 60, s = secondsElapsed % 60
+            StatsService.shared.updateStats(for: .queens, time: TimeInterval(secondsElapsed))
             let alert = UIAlertController(title: "Победа!", message: "Вы решили задачу за \(String(format: "%02d:%02d", m, s))", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
                 if let size = self?.initialSize {

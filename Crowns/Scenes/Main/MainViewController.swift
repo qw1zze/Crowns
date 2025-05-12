@@ -2,12 +2,12 @@ import UIKit
 
 protocol MainDisplayLogic: AnyObject {
     func displayStartGame(viewModel: Main.StartGame.ViewModel)
-    func displayShowStats(viewModel: Main.ShowStats.ViewModel)
+    func displayShowStats()
 }
 
-final class MainViewController: UIViewController, MainDisplayLogic {
+final class MainViewController: UIViewController {
     var interactor: MainBusinessLogic?
-    var router: (MainRoutingLogic & MainDataPassing)?
+    var router: (MainRoutingLogic)?
     
     private let sudokuButton = UIButton(type: .system)
     private let queensButton = UIButton(type: .system)
@@ -21,7 +21,7 @@ final class MainViewController: UIViewController, MainDisplayLogic {
     
     private func setupUI() {
         view.backgroundColor = .secondarySystemBackground
-        title = "Games"
+        title = "Crowns"
         
         sudokuButton.setTitle("Sudoku", for: .normal)
         sudokuButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
@@ -84,18 +84,16 @@ final class MainViewController: UIViewController, MainDisplayLogic {
     }
     
     @objc private func statsTapped() {
-        let vc = StatsViewController()
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .automatic
-        present(nav, animated: true)
+        interactor?.showStats()
     }
-    
-    // MARK: - MainDisplayLogic
+} 
+
+extension MainViewController: MainDisplayLogic {
     func displayStartGame(viewModel: Main.StartGame.ViewModel) {
         router?.routeToGame(type: viewModel.game)
     }
     
-    func displayShowStats(viewModel: Main.ShowStats.ViewModel) {
+    func displayShowStats() {
         router?.routeToStats()
     }
-} 
+}

@@ -18,6 +18,10 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
     var board: Tango.Board?
     var history: [Tango.Board] = []
     let size = 6
+    
+    init(presenter: TangoPresentationLogic?) {
+        self.presenter = presenter
+    }
 
     func startGame(request: Tango.StartGame.Request) {
         let generated = TangoBoardGenerator.generate(size: size)
@@ -107,18 +111,18 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
             }
 
             let rowCounts = board.cells[i].reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, cell in
-                if cell.figure == .nought { dict[.nought]! += 1 }
-                if cell.figure == .cross { dict[.cross]! += 1 }
+                if cell.figure == .nought, let value = dict[.nought] { dict[.nought] = value + 1 }
+                if cell.figure == .cross, let value = dict[.cross] { dict[.cross] = value + 1 }
             }
-            if rowCounts[.nought]! > 3 || rowCounts[.cross]! > 3 {
+            if rowCounts[.nought] ?? 0 > 3 || rowCounts[.cross] ?? 0 > 3 {
                 for col in 0..<size { board.cells[i][col].isError = true }
             }
             let colCounts = (0..<size).reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, row in
                 let f = board.cells[row][i].figure
-                if f == .nought { dict[.nought]! += 1 }
-                if f == .cross { dict[.cross]! += 1 }
+                if f == .nought, let value = dict[.nought] { dict[.nought] = value + 1 }
+                if f == .cross, let value = dict[.cross] { dict[.cross] = value + 1 }
             }
-            if colCounts[.nought]! > 3 || colCounts[.cross]! > 3 {
+            if colCounts[.nought] ?? 0 > 3 || colCounts[.cross] ?? 0 > 3 {
                 for row in 0..<size { board.cells[row][i].isError = true }
             }
         }
@@ -203,18 +207,19 @@ final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
         // Проверка количества в строках и столбцах
         for i in 0..<size {
             let rowCounts = testBoard.cells[i].reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, cell in
-                if cell.figure == .nought { dict[.nought]! += 1 }
-                if cell.figure == .cross { dict[.cross]! += 1 }
+                if cell.figure == .nought, let value = dict[.nought] { dict[.nought] = value + 1 }
+                if cell.figure == .cross, let value = dict[.cross] { dict[.cross] = value + 1 }
             }
-            if rowCounts[.nought]! > 3 || rowCounts[.cross]! > 3 {
+            if rowCounts[.nought] ?? 0 > 3 || rowCounts[.cross] ?? 0 > 3 {
                 return false
             }
             let colCounts = (0..<size).reduce(into: [Tango.Figure.nought: 0, Tango.Figure.cross: 0]) { dict, row in
                 let f = testBoard.cells[row][i].figure
-                if f == .nought { dict[.nought]! += 1 }
-                if f == .cross { dict[.cross]! += 1 }
+                
+                if f == .nought, let value = dict[.nought] { dict[.nought] = value + 1 }
+                if f == .cross, let value = dict[.cross] { dict[.cross] = value + 1 }
             }
-            if colCounts[.nought]! > 3 || colCounts[.cross]! > 3 {
+            if colCounts[.nought] ?? 0 > 3 || colCounts[.cross] ?? 0 > 3 {
                 return false
             }
         }

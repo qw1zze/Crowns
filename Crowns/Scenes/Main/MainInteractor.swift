@@ -2,12 +2,10 @@ import Foundation
 
 protocol MainBusinessLogic {
     func startGame(request: Main.StartGame.Request)
-    func showStats(request: Main.ShowStats.Request)
+    func showStats()
 }
 
-protocol MainDataStore {}
-
-final class MainInteractor: MainBusinessLogic, MainDataStore {
+final class MainInteractor: MainBusinessLogic {
     var presenter: MainPresentationLogic?
     
     func startGame(request: Main.StartGame.Request) {
@@ -15,7 +13,7 @@ final class MainInteractor: MainBusinessLogic, MainDataStore {
         presenter?.presentStartGame(response: response)
     }
     
-    func showStats(request: Main.ShowStats.Request) {
-        presenter?.presentShowStats(response: Main.ShowStats.Response())
+    func showStats() {
+        presenter?.presentShowStats()
     }
 } 

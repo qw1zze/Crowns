@@ -23,7 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         presenter.viewController = mainVC
         interactor.presenter = presenter
         router.viewController = mainVC
-        router.dataStore = interactor
         mainVC.interactor = interactor
         mainVC.router = router
         let nav = UINavigationController(rootViewController: mainVC)

@@ -84,7 +84,10 @@ final class MainViewController: UIViewController, MainDisplayLogic {
     }
     
     @objc private func statsTapped() {
-        interactor?.showStats(request: Main.ShowStats.Request())
+        let vc = StatsViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .automatic
+        present(nav, animated: true)
     }
     
     // MARK: - MainDisplayLogic

@@ -33,9 +33,17 @@ final class MainRouter: MainRoutingLogic, MainDataPassing {
             }
             viewController?.present(selector, animated: true)
         case .tango:
-            let alert = UIAlertController(title: "В разработке", message: "Игра появится позже", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            viewController?.present(alert, animated: true)
+            let vc = TangoViewController()
+            let presenter = TangoPresenter()
+            let interactor = TangoInteractor()
+            let router = TangoRouter()
+            presenter.viewController = vc
+            interactor.presenter = presenter
+            vc.interactor = interactor
+            vc.router = router
+            router.viewController = vc
+            router.dataStore = interactor
+            viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

@@ -17,17 +17,19 @@ protocol QueensDataStore {
 
 final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
     var presenter: QueensPresentationLogic?
+    private let generator: QueensGeneratorAdapter
     var board: Queens.Board?
     var history: [Queens.Board] = []
     var size: Int = 8
     
-    init(presenter: QueensPresentationLogic?) {
+    init(presenter: QueensPresentationLogic?, generator: QueensGeneratorAdapter = QueensGeneratorAdapter()) {
         self.presenter = presenter
+        self.generator = generator
     }
 
     func startGame(request: Queens.StartGame.Request) {
         size = request.size
-        let generated = QueensFieldGenerator.generate(size: size)
+        let generated = generator.generate(size: size)
         board = generated
         history = []
         presenter?.presentStartGame(response: Queens.StartGame.Response(board: generated))

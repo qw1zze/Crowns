@@ -15,19 +15,19 @@ protocol SudokuDataStore {
 
 final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
     private let presenter: SudokuPresentationLogic
-    private let sudokuGenerator: SudokuGeneratorProtocol
+    private let generator: SudokuGeneratorAdapter
     
     var currentBoard: [[Int]] = []
     var solution: [[Int]] = []
     private var history: [[[Int]]] = []
     
-    init(presenter: SudokuPresentationLogic, sudokuGenerator: SudokuGeneratorProtocol = SudokuGenerator()) {
+    init(presenter: SudokuPresentationLogic, generator: SudokuGeneratorAdapter = SudokuGeneratorAdapter()) {
         self.presenter = presenter
-        self.sudokuGenerator = sudokuGenerator
+        self.generator = generator
     }
     
     func generateNewGame() {
-        let (board, solution) = sudokuGenerator.generateSudoku()
+        let (board, solution) = generator.generate(size: 9)
         self.currentBoard = board
         self.solution = solution
         self.history = []

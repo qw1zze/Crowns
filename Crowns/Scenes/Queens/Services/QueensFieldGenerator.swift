@@ -1,5 +1,9 @@
 import UIKit
 
+protocol GeneratorStrategy {
+    static func generate(size: Int) -> Queens.Board
+}
+
 final class QueensFieldGenerator {
     static func isSafe(_ row: Int, _ col: Int, _ queens: [Int]) -> Bool {
         for r in 0..<queens.count {

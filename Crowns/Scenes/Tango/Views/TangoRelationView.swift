@@ -8,25 +8,35 @@
 import UIKit
 
 final class TangoRelationView: UIView {
+    
     enum RelationType {
-        case equal, cross
+        case equal
+        case cross
     }
+    
     var type: RelationType = .equal {
         didSet { setNeedsDisplay() }
     }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
         tintColor = .white
         isUserInteractionEnabled = false
     }
-    required init?(coder: NSCoder) { fatalError() }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func draw(_ rect: CGRect) {
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
+        
         let w = rect.width, h = rect.height
         ctx.setLineCap(.round)
         ctx.setLineWidth(min(w, h) * 0.18)
         ctx.setStrokeColor(UIColor.primary.cgColor)
+        
         switch type {
         case .equal:
             let y1 = h * 0.35, y2 = h * 0.65

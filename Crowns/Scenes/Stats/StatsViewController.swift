@@ -14,6 +14,7 @@ final class StatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
+        
         setupStack()
         setupResetButton()
         layoutUI()
@@ -62,15 +63,19 @@ final class StatsViewController: UIViewController {
         title.text = mode.rawValue
         title.font = .boldSystemFont(ofSize: 18)
         title.textColor = .white
+        
         let games = UILabel()
         games.textColor = .white
         games.text = "Завершено игр: \(stats.gamesCompleted)"
+        
         let avg = UILabel()
         avg.text = "Среднее время: " + (stats.gamesCompleted == 0 ? "-" : formatTime(stats.averageTime))
         avg.textColor = .white
+        
         let best = UILabel()
         best.text = "Лучшее время: " + (stats.bestTime == .greatestFiniteMagnitude ? "-" : formatTime(stats.bestTime))
         best.textColor = .white
+        
         let vStack = UIStackView(arrangedSubviews: [title, games, avg, best])
         vStack.axis = .vertical
         vStack.spacing = 4
@@ -94,6 +99,7 @@ final class StatsViewController: UIViewController {
             StatsService.shared.resetStats()
             self.updateStats()
         })
+        
         present(alert, animated: true)
     }
 } 

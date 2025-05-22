@@ -44,6 +44,7 @@ final class SudokuGenerator: SudokuGeneratorProtocol {
         }
     }
     
+    @discardableResult
     private func solveSudoku(_ board: inout [[Int]]) -> Bool {
         var row = -1
         var col = -1

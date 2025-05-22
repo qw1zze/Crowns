@@ -9,8 +9,9 @@ import UIKit
 
 final class SudokuBoardView: UIView {
     private var cells: [[SudokuCellView]] = []
-    var cellSelected: ((SudokuCell) -> Void)?
     private var selectedCellView: SudokuCellView?
+    
+    var cellSelected: ((SudokuCell) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,6 +35,7 @@ final class SudokuBoardView: UIView {
                 addSubview(cell)
                 rowCells.append(cell)
             }
+            
             cells.append(rowCells)
         }
         
@@ -50,15 +52,17 @@ final class SudokuBoardView: UIView {
         for row in 0..<9 {
             for col in 0..<9 {
                 let cell = cells[row][col]
-                cell.translatesAutoresizingMaskIntoConstraints = false
                 
+                cell.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     cell.widthAnchor.constraint(equalToConstant: cellSize),
                     cell.heightAnchor.constraint(equalToConstant: cellSize),
                     cell.leadingAnchor.constraint(equalTo: horizontalConstraint, constant: (col % 3 == 0 ? separatorSize : 0)),
                     cell.topAnchor.constraint(equalTo: verticalConstraint, constant: (row % 3 == 0 ? separatorSize : 0))
                 ])
+                
                 horizontalConstraint = cell.trailingAnchor
+                
                 if col == 8 {
                     horizontalConstraint = leadingAnchor
                     verticalConstraint = cell.bottomAnchor
@@ -68,7 +72,6 @@ final class SudokuBoardView: UIView {
     }
     
     func updateBoard(with cells: [[SudokuCell]]) {
-        print("aaaaa")
         for row in 0..<9 {
             for col in 0..<9 {
                 let cell = cells[row][col]

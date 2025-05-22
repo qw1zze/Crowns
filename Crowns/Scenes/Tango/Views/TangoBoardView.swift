@@ -1,3 +1,10 @@
+//
+//  TangoBoardView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 11/5/25.
+//
+
 import UIKit
 
 final class TangoBoardView: UIView {

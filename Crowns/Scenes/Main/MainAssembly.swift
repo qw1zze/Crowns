@@ -1,3 +1,10 @@
+//
+//  MainAssembly.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 5/5/25.
+//
+
 import UIKit
 
 enum MainAssembly {

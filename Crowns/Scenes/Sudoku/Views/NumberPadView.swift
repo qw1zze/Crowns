@@ -1,3 +1,10 @@
+//
+//  NumberPadView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 7/3/25.
+//
+
 import UIKit
 
 final class NumberPadView: UIView {

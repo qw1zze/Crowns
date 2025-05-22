@@ -1,3 +1,10 @@
+//
+//  QueensPresenter.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/5/25.
+//
+
 import Foundation
 
 protocol QueensPresentationLogic {

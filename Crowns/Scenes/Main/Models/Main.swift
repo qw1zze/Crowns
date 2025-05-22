@@ -1,3 +1,10 @@
+//
+//  Main.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 5/1/25.
+//
+
 import Foundation
 
 enum Main {

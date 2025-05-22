@@ -1,3 +1,10 @@
+//
+//  QueensActionBarView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/5/25.
+//
+
 import UIKit
 
 final class QueensActionBarView: UIView {

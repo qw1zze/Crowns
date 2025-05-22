@@ -1,3 +1,10 @@
+//
+//  SudokuGeneratorAdapter.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/3/25.
+//
+
 import Foundation
 
 final class SudokuGeneratorAdapter: PuzzleGenerator {

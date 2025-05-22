@@ -1,3 +1,10 @@
+//
+//  StatsService.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 12/5/25.
+//
+
 import Foundation
 
 enum GameMode: String, CaseIterable, Codable {

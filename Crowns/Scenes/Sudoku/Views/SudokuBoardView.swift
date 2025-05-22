@@ -1,3 +1,10 @@
+//
+//  SudokuBoardView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 5/3/25.
+//
+
 import UIKit
 
 final class SudokuBoardView: UIView {

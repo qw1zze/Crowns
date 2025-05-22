@@ -1,3 +1,10 @@
+//
+//  TangoBoardGenerator.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 11/5/25.
+//
+
 import Foundation
 
 struct CellPair: Hashable, Equatable {

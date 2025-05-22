@@ -14,7 +14,7 @@
 		8E448C1C2DC6DF3600D2A0F0 /* Exceptions for "Crowns" folder in "Crowns" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Utilities/Info.plist,
 			);
 			target = 8E448C092DC6DF3500D2A0F0 /* Crowns */;
 		};
@@ -147,7 +147,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UM76JVRRXH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Crowns/Info.plist;
+				INFOPLIST_FILE = Crowns/Utilities/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -175,7 +175,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UM76JVRRXH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Crowns/Info.plist;
+				INFOPLIST_FILE = Crowns/Utilities/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

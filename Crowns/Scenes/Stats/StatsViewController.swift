@@ -1,3 +1,10 @@
+//
+//  StatsViewController.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 12/5/25.
+//
+
 import UIKit
 
 final class StatsViewController: UIViewController {

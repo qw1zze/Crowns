@@ -15,16 +15,18 @@ protocol TangoDataStore {
 
 final class TangoInteractor: TangoBusinessLogic, TangoDataStore {
     var presenter: TangoPresentationLogic?
+    private let generator: TangoGeneratorAdapter
     var board: Tango.Board?
     var history: [Tango.Board] = []
     let size = 6
     
-    init(presenter: TangoPresentationLogic?) {
+    init(presenter: TangoPresentationLogic?, generator: TangoGeneratorAdapter = TangoGeneratorAdapter()) {
         self.presenter = presenter
+        self.generator = generator
     }
 
     func startGame(request: Tango.StartGame.Request) {
-        let generated = TangoBoardGenerator.generate(size: size)
+        let generated = generator.generate(size: size)
         board = generated
         history = []
         presenter?.presentStartGame(response: Tango.StartGame.Response(board: generated))

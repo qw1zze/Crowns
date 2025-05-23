@@ -29,7 +29,7 @@ final class NumberPadView: UIView {
             let button = UIButton(type: .system)
             button.setTitle("\(number)", for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 24, weight: .medium)
-            button.tintColor = .primary
+            button.tintColor = .primaryCustom
             button.backgroundColor = .backgrundSecondary
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOpacity = 0.3

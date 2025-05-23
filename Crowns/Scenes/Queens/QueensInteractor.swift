@@ -111,7 +111,6 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
     }
 
     private func isValid(row: Int, col: Int, board: Queens.Board) -> Bool {
-        let color = board.cells[row][col].color
         for c in 0..<size where c != col {
             if board.cells[row][c].hasQueen { return false }
         }
@@ -121,7 +120,6 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
         }
         
         for (r, c) in board.segments.first(where: { $0.contains(where: { $0 == (row, col) }) }) ?? [] {
-            print(r, c)
             if (r != row || c != col) && board.cells[r][c].hasQueen { return false }
         }
         

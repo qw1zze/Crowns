@@ -1,3 +1,10 @@
+//
+//  QueensInteractor.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/5/25.
+//
+
 import Foundation
 import UIKit
 
@@ -17,17 +24,20 @@ protocol QueensDataStore {
 
 final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
     var presenter: QueensPresentationLogic?
+    
+    private let generator: QueensGeneratorAdapter
     var board: Queens.Board?
     var history: [Queens.Board] = []
     var size: Int = 8
     
-    init(presenter: QueensPresentationLogic?) {
+    init(presenter: QueensPresentationLogic?, generator: QueensGeneratorAdapter = QueensGeneratorAdapter()) {
         self.presenter = presenter
+        self.generator = generator
     }
 
     func startGame(request: Queens.StartGame.Request) {
         size = request.size
-        let generated = QueensFieldGenerator.generate(size: size)
+        let generated = generator.generate(size: size)
         board = generated
         history = []
         presenter?.presentStartGame(response: Queens.StartGame.Response(board: generated))
@@ -36,7 +46,9 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
     func placeQueen(request: Queens.PlaceQueen.Request) {
         guard var board = board else { return }
         history.append(board)
+        
         var cell = board.cells[request.row][request.col]
+        
         if cell.hasCross {
             cell.hasCross = false
             cell.hasQueen = true
@@ -45,15 +57,18 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
         } else {
             cell.hasCross = true
         }
+        
         board.cells[request.row][request.col] = cell
         self.board = board
         validateBoard()
+        
         presenter?.presentPlaceQueen(response: Queens.PlaceQueen.Response(board: self.board!))
     }
 
     func undo(request: Queens.Undo.Request) {
         guard let prev = history.popLast() else { return }
         board = prev
+        
         presenter?.presentUndo(response: Queens.Undo.Response(board: prev))
     }
 
@@ -83,6 +98,7 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
         for row in 0..<size {
             for col in 0..<size {
                 let cell = board.cells[row][col]
+                
                 if cell.hasQueen {
                     board.cells[row][col].isError = !isValid(row: row, col: col, board: board)
                 } else {
@@ -90,35 +106,39 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
                 }
             }
         }
+        
         self.board = board
     }
 
     private func isValid(row: Int, col: Int, board: Queens.Board) -> Bool {
-        let color = board.cells[row][col].color
         for c in 0..<size where c != col {
             if board.cells[row][c].hasQueen { return false }
         }
+        
         for r in 0..<size where r != row {
             if board.cells[r][col].hasQueen { return false }
         }
+        
         for (r, c) in board.segments.first(where: { $0.contains(where: { $0 == (row, col) }) }) ?? [] {
-            print(r, c)
             if (r != row || c != col) && board.cells[r][c].hasQueen { return false }
         }
         
         if row - 1 >= 0, col - 1 >= 0, board.cells[row - 1][col - 1].hasQueen {
             return false
         }
+        
         if row - 1 >= 0, col + 1 < size, board.cells[row - 1][col + 1].hasQueen {
             return false
         }
+        
         if row + 1 < size, col - 1 >= 0, board.cells[row + 1][col - 1].hasQueen {
             return false
         }
+        
         if row + 1 < size, col + 1 < size, board.cells[row + 1][col + 1].hasQueen {
             return false
         }
-        print("true")
+        
         return true
     }
 
@@ -132,6 +152,7 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
                 }
             }
         }
+        
         return queens == size
     }
 
@@ -142,6 +163,7 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
                 if board.cells[row][col].hasQueen { count += 1 }
             }
         }
+        
         return count
     }
 
@@ -152,12 +174,14 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
                 if isValid(row: row, col: col, board: board) && !board.cells[row][col].hasQueen {
                     var nextBoard = board
                     nextBoard.cells[row][col].hasQueen = true
+                    
                     if canSolve(board: nextBoard, queensLeft: queensLeft - 1) {
                         return true
                     }
                 }
             }
         }
+        
         return false
     }
 } 

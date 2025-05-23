@@ -1,3 +1,10 @@
+//
+//  SudokuCellView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 6/3/25.
+//
+
 import UIKit
 
 
@@ -59,12 +66,12 @@ final class SudokuCellView: UIButton {
         isEditable = cell.isEditable
         label.text = cell.value == 0 ? "" : "\(cell.value)"
         label.textColor = .white.withAlphaComponent(0.9)
-        
         isSelected = false
     }
     
     func highlight() {
         backgroundColor = .green.withAlphaComponent(0.3)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.updateAppearance()
         }
@@ -73,6 +80,7 @@ final class SudokuCellView: UIButton {
     func showError() {
         let originalColor = backgroundColor
         backgroundColor = .systemRed.withAlphaComponent(0.3)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
             self?.backgroundColor = originalColor
             self?.updateAppearance()

@@ -1,3 +1,10 @@
+//
+//  SudokuViewController.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 4/3/25.
+//
+
 import UIKit
 
 protocol SudokuDisplayLogic: AnyObject {
@@ -31,6 +38,7 @@ final class SudokuViewController: UIViewController {
         setupActions()
         interactor?.generateNewGame()
         startTimer()
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(showSudokuInstructions))
     }
     
@@ -151,9 +159,11 @@ extension SudokuViewController: SudokuDisplayLogic {
     func displayError(message: String) {
         mistakesCount += 1
         updateMistakesLabel()
+        
         if let cell = selectedCell {
             boardView.showErrorOnCell(cell)
         }
+        
         if mistakesCount >= 3 {
             interactor?.handleGameOver()
         }
@@ -164,22 +174,27 @@ extension SudokuViewController: SudokuDisplayLogic {
         let minutes = secondsElapsed / 60
         let seconds = secondsElapsed % 60
         let timeString = String(format: "%02d:%02d", minutes, seconds)
+        
         StatsService.shared.updateStats(for: .sudoku, time: TimeInterval(secondsElapsed))
+        
         let alert = UIAlertController(title: "Вы выиграли!", message: "Вы решили судоку за \(timeString)!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
             self?.interactor?.generateNewGame()
             self?.startTimer()
         })
+        
         present(alert, animated: true)
     }
     
     func displayGameOver() {
         stopTimer()
+        
         let alert = UIAlertController(title: "Вы проиграли", message: "Вы сделали слишком много ошибок!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Новая игра", style: .default) { [weak self] _ in
             self?.interactor?.generateNewGame()
             self?.startTimer()
         })
+        
         present(alert, animated: true)
     }
     

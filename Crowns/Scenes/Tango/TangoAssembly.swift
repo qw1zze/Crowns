@@ -1,3 +1,10 @@
+//
+//  TangoAssembly.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 11/5/25.
+//
+
 import UIKit
 
 enum TangoAssembly {

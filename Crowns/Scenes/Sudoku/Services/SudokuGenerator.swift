@@ -1,3 +1,10 @@
+//
+//  SudokuGenerator.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/3/25.
+//
+
 import Foundation
 
 protocol SudokuGeneratorProtocol {
@@ -37,6 +44,7 @@ final class SudokuGenerator: SudokuGeneratorProtocol {
         }
     }
     
+    @discardableResult
     private func solveSudoku(_ board: inout [[Int]]) -> Bool {
         var row = -1
         var col = -1

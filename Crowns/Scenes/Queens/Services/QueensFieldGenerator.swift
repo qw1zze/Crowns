@@ -1,13 +1,25 @@
+//
+//  QueensFieldGenerator.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 8/5/25.
+//
+
 import UIKit
 
-final class QueensFieldGenerator {
+protocol GeneratorStrategy {
+    static func generate(size: Int) -> Queens.Board
+}
+
+final class QueensFieldGenerator: GeneratorStrategy {
+    
     static func isSafe(_ row: Int, _ col: Int, _ queens: [Int]) -> Bool {
         for r in 0..<queens.count {
-            let c = queens[r]
-            if c == col || abs(row - r) == abs(col - c) {
+            if queens[r] == col || abs(row - r) == abs(col - queens[r]) {
                 return false
             }
         }
+        
         return true
     }
 
@@ -15,12 +27,15 @@ final class QueensFieldGenerator {
         if row == n {
             return [queens]
         }
+        
         var solutions = [[Int]]()
+        
         for col in 0..<n {
             if isSafe(row, col, queens) {
                 solutions += solveNQueens(n, row + 1, queens + [col])
             }
         }
+        
         return solutions
     }
 
@@ -31,8 +46,10 @@ final class QueensFieldGenerator {
         
         for row in 0..<size {
             let col = queens[row]
+            
             board[row][col] = row
             regions[row].append((row, col))
+            
             for (dr, dc) in [(-1,0), (1,0), (0,-1), (0,1)] {
                 let nr = row + dr
                 let nc = col + dc
@@ -80,36 +97,33 @@ final class QueensFieldGenerator {
         return (board, regions)
     }
 
-        static func generate(size: Int) -> Queens.Board {
-            let colors: [UIColor] = [.systemBlue, .systemGreen, .systemOrange, .systemPink, .systemPurple, .systemTeal, .systemYellow, .systemRed, .systemIndigo, .brown, .magenta, .cyan]
-            
-            let solutions = solveNQueens(size)
-            var cells: [[Queens.Cell]] = []
-            if let randomSolution = solutions.randomElement() {
-                let (board, segments) = generateRegions(size: size, from: randomSolution)
-                
-                var rowCells: [Queens.Cell] = []
-                for i in 0..<size {
-                    rowCells = []
-                    for j in 0..<size {
-                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]].withAlphaComponent(0.8), hasQueen: false, hasCross: false, isError: false))
-                    }
-                    cells.append(rowCells)
-                }
-                print(board)
-                return Queens.Board(size: size, cells: cells, segments: segments)
-            } else {
-                let randomSolution = solutions[0]
-                let (board, segments) = generateRegions(size: size, from: randomSolution)
-                
-                var rowCells: [Queens.Cell] = []
-                for i in 0..<size {
-                    for j in 0..<size {
-                        rowCells.append(Queens.Cell(row: i, col: j, color: colors[board[i][j]].withAlphaComponent(0.8), hasQueen: false, hasCross: false, isError: false))
-                    }
-                    cells.append(rowCells)
-                }
-                return Queens.Board(size: size, cells: cells, segments: segments)
+    static func generate(size: Int) -> Queens.Board {
+        let colors: [UIColor] = [.systemBlue, .systemGreen, .systemOrange, .systemPink, .systemPurple, .systemTeal, .systemYellow, .systemRed, .systemIndigo, .brown, .magenta, .cyan]
+        
+        let solutions = solveNQueens(size)
+        var cells: [[Queens.Cell]] = []
+        
+        let randomSolution = solutions.randomElement() ?? solutions[0]
+        
+        let (board, segments) = generateRegions(size: size, from: randomSolution)
+        
+        var rowCells: [Queens.Cell] = []
+        for i in 0..<size {
+            rowCells = []
+            for j in 0..<size {
+                rowCells.append(
+                    Queens.Cell(row: i,
+                                col: j,
+                                color: colors[board[i][j]].withAlphaComponent(0.8),
+                                hasQueen: false,
+                                hasCross: false,
+                                isError: false)
+                )
             }
+            
+            cells.append(rowCells)
         }
-} 
+        
+        return Queens.Board(size: size, cells: cells, segments: segments)
+    }
+}

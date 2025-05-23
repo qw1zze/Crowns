@@ -1,3 +1,10 @@
+//
+//  MainViewController.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 5/5/25.
+//
+
 import UIKit
 
 protocol MainDisplayLogic: AnyObject {

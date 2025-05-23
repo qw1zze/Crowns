@@ -1,3 +1,10 @@
+//
+//  SudokuInteractor.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 4/3/25.
+//
+
 import Foundation
 
 protocol SudokuBusinessLogic {
@@ -15,19 +22,19 @@ protocol SudokuDataStore {
 
 final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
     private let presenter: SudokuPresentationLogic
-    private let sudokuGenerator: SudokuGeneratorProtocol
+    private let generator: SudokuGeneratorAdapter
     
     var currentBoard: [[Int]] = []
     var solution: [[Int]] = []
     private var history: [[[Int]]] = []
     
-    init(presenter: SudokuPresentationLogic, sudokuGenerator: SudokuGeneratorProtocol = SudokuGenerator()) {
+    init(presenter: SudokuPresentationLogic, generator: SudokuGeneratorAdapter = SudokuGeneratorAdapter()) {
         self.presenter = presenter
-        self.sudokuGenerator = sudokuGenerator
+        self.generator = generator
     }
     
     func generateNewGame() {
-        let (board, solution) = sudokuGenerator.generateSudoku()
+        let (board, solution) = generator.generate(size: 9)
         self.currentBoard = board
         self.solution = solution
         self.history = []
@@ -39,7 +46,7 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
     
     func validateAndPlaceNumber(number: Int, at cell: SudokuCell) {
         guard cell.isEditable else {
-            presenter.presentError(message: "This cell cannot be edited")
+            presenter.presentError(message: "Эта ячейка не может быть изменена")
             return
         }
         
@@ -54,7 +61,7 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
                 presenter.presentWin()
             }
         } else {
-            presenter.presentError(message: "Incorrect number")
+            presenter.presentError(message: "Некорректное число")
         }
     }
     
@@ -62,8 +69,10 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
         guard cell.isEditable else { return }
         
         history.append(currentBoard.map { $0 })
+        
         let correctNumber = solution[cell.row][cell.column]
         currentBoard[cell.row][cell.column] = correctNumber
+        
         let viewModel = Sudoku.Board.ViewModel(cells: convertBoardToCells(currentBoard))
         presenter.presentBoard(viewModel: viewModel)
         presenter.presentHint(cell: cell)
@@ -79,6 +88,7 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
     
     func undoLastMove() {
         guard let previous = history.popLast() else { return }
+        
         currentBoard = previous
         let viewModel = Sudoku.Board.ViewModel(cells: convertBoardToCells(currentBoard))
         presenter.presentBoard(viewModel: viewModel)
@@ -93,8 +103,10 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
                 let cell = SudokuCell(row: row, column: col, value: board[row][col], isEditable: isEditable)
                 rowCells.append(cell)
             }
+            
             cells.append(rowCells)
         }
+        
         return cells
     }
     
@@ -106,6 +118,7 @@ final class SudokuInteractor: SudokuBusinessLogic, SudokuDataStore {
                 }
             }
         }
+        
         return true
     }
 } 

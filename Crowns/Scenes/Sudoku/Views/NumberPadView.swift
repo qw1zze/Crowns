@@ -1,7 +1,15 @@
+//
+//  NumberPadView.swift
+//  Crowns
+//
+//  Created by Dmitriy Kalyakin on 7/3/25.
+//
+
 import UIKit
 
 final class NumberPadView: UIView {
     private var buttons: [UIButton] = []
+    
     var numberSelected: ((Int) -> Void)?
     
     override init(frame: CGRect) {
@@ -21,7 +29,7 @@ final class NumberPadView: UIView {
             let button = UIButton(type: .system)
             button.setTitle("\(number)", for: .normal)
             button.titleLabel?.font = .systemFont(ofSize: 24, weight: .medium)
-            button.tintColor = .primary
+            button.tintColor = .primaryCustom
             button.backgroundColor = .backgrundSecondary
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOpacity = 0.3
@@ -30,6 +38,7 @@ final class NumberPadView: UIView {
             button.layer.cornerRadius = 8
             button.tag = number
             button.addTarget(self, action: #selector(numberTapped(_:)), for: .touchUpInside)
+            
             addSubview(button)
             buttons.append(button)
         }
@@ -50,8 +59,6 @@ final class NumberPadView: UIView {
                 button.widthAnchor.constraint(equalToConstant: buttonWidth),
                 button.heightAnchor.constraint(equalToConstant: buttonWidth * 1.2),
                 button.topAnchor.constraint(equalTo: topAnchor),
-
-                
                 button.leadingAnchor.constraint(equalTo: index == 0 ? leadingAnchor : buttons[index - 1].trailingAnchor, constant: index == 0 ? 0 : spacing)
             ])
         }

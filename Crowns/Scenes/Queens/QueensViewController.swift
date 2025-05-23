@@ -44,7 +44,7 @@ final class QueensViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "questionmark.circle"), style: .plain, target: self, action: #selector(instructionTapped))
         
         timerLabel.font = .monospacedDigitSystemFont(ofSize: 16, weight: .medium)
-        timerLabel.textColor = .primary
+        timerLabel.textColor = .primaryCustom
         timerLabel.textAlignment = .center
         timerLabel.text = "00:00"
     }

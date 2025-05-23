@@ -35,7 +35,7 @@ final class TangoRelationView: UIView {
         let w = rect.width, h = rect.height
         ctx.setLineCap(.round)
         ctx.setLineWidth(min(w, h) * 0.18)
-        ctx.setStrokeColor(UIColor.primary.cgColor)
+        ctx.setStrokeColor(UIColor.primaryCustom.cgColor)
         
         switch type {
         case .equal:

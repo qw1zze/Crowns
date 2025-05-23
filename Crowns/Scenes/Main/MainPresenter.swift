@@ -15,6 +15,10 @@ protocol MainPresentationLogic {
 final class MainPresenter: MainPresentationLogic {
     weak var viewController: MainDisplayLogic?
     
+    init(viewController: MainDisplayLogic) {
+        self.viewController = viewController
+    }
+    
     func presentStartGame(response: Main.StartGame.Response) {
         let viewModel = Main.StartGame.ViewModel(game: response.game)
         viewController?.displayStartGame(viewModel: viewModel)

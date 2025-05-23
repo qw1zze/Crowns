@@ -10,8 +10,16 @@ import UIKit
 
 enum Queens {
     enum GameSize: Int, CaseIterable {
-        case five = 5, six, seven, eight, nine, ten, eleven, twelve
         var title: String { "\(rawValue) x \(rawValue)" }
+        
+        case five = 5
+        case six
+        case seven
+        case eight
+        case nine
+        case ten
+        case eleven
+        case twelve
     }
 
     struct Cell {

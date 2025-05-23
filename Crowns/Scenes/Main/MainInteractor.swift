@@ -15,6 +15,10 @@ protocol MainBusinessLogic {
 final class MainInteractor: MainBusinessLogic {
     var presenter: MainPresentationLogic?
     
+    init(presenter: MainPresentationLogic?) {
+        self.presenter = presenter
+    }
+    
     func startGame(request: Main.StartGame.Request) {
         let response = Main.StartGame.Response(game: request.game)
         presenter?.presentStartGame(response: response)

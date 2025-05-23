@@ -121,7 +121,6 @@ final class QueensInteractor: QueensBusinessLogic, QueensDataStore {
         }
         
         for (r, c) in board.segments.first(where: { $0.contains(where: { $0 == (row, col) }) }) ?? [] {
-            print(r, c)
             if (r != row || c != col) && board.cells[r][c].hasQueen { return false }
         }
         
